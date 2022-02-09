@@ -9,6 +9,7 @@ in
       kustomize
       kubectl
       kubernetes-helm
+      fluxcd
       crossplane-cli
     ];
 
