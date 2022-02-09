@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dump-kubeconfig
+spec:
+  ttlSecondsAfterFinished: 10
+  template:
+    spec:
+      serviceAccountName: provide
+      initContainers:
+      - name: prepare-binary
+        image: debian:stable-slim
+        command:
+        - bash
+        - -c
+        - cp /var/to-run/export-creds.sh /output && chmod +x /output/export-creds.sh
+        volumeMounts:
+        - name: config-volume
+          mountPath: /var/to-run
+        - name: shared
+          mountPath: /output
+      containers:
+      - name: create-secret
+        image: bitnami/kubectl:1.22
+        command: ["/etc/to-run/export-creds.sh"]
+        volumeMounts:
+        - name: shared
+          mountPath: /etc/to-run
+      restartPolicy: Never
+      volumes:
+      - name: config-volume
+        configMap:
+          name: files
+      - name: shared
+        emptyDir: {}
+  backoffLimit: 2
+
