@@ -20,16 +20,25 @@ build:
 
 .PHONY: crossplane
 crossplane: cluster
-	$(kustomize-build-crossplane) | kubectl apply -f - && sleep 3
+	$(kustomize-build-crossplane) | kubectl apply -f -
+	kubectl wait --for=condition=Available deployment crossplane --namespace=crossplane-system --timeout=60s
 
 .PHONY: provide
 provide:
 	$(kustomize-build) ./kustomize/provide | kubectl apply -f -
+	kubectl wait --for=delete secret/kubeconfig --timeout=20s
+
+.PHONY: provider-core
+provider-core: crossplane
+	$(kustomize-build) ./kustomize/provider-kubernetes/core | kubectl apply -f -
+	kubectl wait --for=condition=Healthy providers provider-kubernetes --timeout=30s
 
 .PHONY: provider
-provider: crossplane provide
-	$(kustomize-build) ./kustomize/provider-kubernetes | kubectl apply -f -
+provider: provider-core provide
+	$(kustomize-build) ./kustomize/provider-kubernetes/with-config | kubectl apply -f -
+	kubectl wait --for=condition=Healthy providers provider-kubernetes --timeout=30s
 
 .PHONY: mock-cloud
 mock-cloud: provider
 	$(kustomize-build) ./kustomize/mock-cloud | kubectl apply -f -
+	kubectl wait --for=condition=Ready object mock-cloud-crossplane --timeout=120s

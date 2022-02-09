@@ -13,10 +13,10 @@ No matter what providers are you just configure them like this and then you are 
 ## What exactly happens?
 
 1. Install the "provider"
-By adding [./provider.yaml](./provider.yaml) to Crossplane cluster.
+By adding [./core/provider.yaml](./core/provider.yaml) to Crossplane cluster.
 
 2. Establish connection
-By adding [./providerconfig.yaml](./providerconfig.yaml) to Crossplane cluster.
+By adding [./with-config/providerconfig.yaml](./with-config/providerconfig.yaml) to Crossplane cluster.
 
 3. Ready to make changes
 Crossplane will now watch for any resources that are derived from `*.kubernetes.crossplane.io` and reconcile.
