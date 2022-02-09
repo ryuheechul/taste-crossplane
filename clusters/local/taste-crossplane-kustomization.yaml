@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./kustomize/crossplane
+  path: ./kustomize/crossplane/hard-coded
   prune: true
   sourceRef:
     kind: GitRepository
