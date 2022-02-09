@@ -42,3 +42,14 @@ provider: provider-core provide
 mock-cloud: provider
 	$(kustomize-build) ./kustomize/mock-cloud | kubectl apply -f -
 	kubectl wait --for=condition=Ready object mock-cloud-crossplane --timeout=120s
+
+.PHONY: setup-fluxcd
+setup-fluxcd:
+	@test -n "$(GITHUB_TOKEN)" || (echo '$$GITHUB_TOKEN is not found' && false)
+	@test -n "$(GITHUB_USER)" || (echo '$$GITHUB_USER is not found' && false)
+	flux bootstrap github \
+		--owner=$(GITHUB_USER) \
+		--repository=taste-crossplane \
+		--branch=flux \
+		--path=./clusters/local \
+		--personal
