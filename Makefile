@@ -1,5 +1,5 @@
 kustomize-build = kubectl kustomize --enable-helm
-kustomize-build-crossplane = $(kustomize-build) ./kustomize/crossplane
+kustomize-build-crossplane = $(kustomize-build) ./kustomize/crossplane/with-inflator
 
 .PHONY: status
 status:
@@ -14,9 +14,9 @@ stop:
 	minikube stop -p taste-crossplane
 	minikube delete -p taste-crossplane
 
-.PHONY: build
-build:
-	$(kustomize-build-crossplane)
+.PHONY: pre-inflate
+pre-inflate:
+	$(kustomize-build-crossplane) > ./kustomize/crossplane/hard-coded/chart-rendered.yaml
 
 .PHONY: crossplane
 crossplane: cluster
