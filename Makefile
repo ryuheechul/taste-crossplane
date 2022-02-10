@@ -1,6 +1,13 @@
 kustomize-build = kubectl kustomize --enable-helm
 kustomize-build-crossplane = $(kustomize-build) ./kustomize/crossplane/with-inflator
 
+flux-bootstrap = flux bootstrap github \
+	--owner=$(GITHUB_USER) \
+	--repository=taste-crossplane \
+	--branch=flux \
+	--path=./clusters/local \
+	--personal
+
 .PHONY: status
 status:
 	minikube status -p taste-crossplane
@@ -17,6 +24,8 @@ stop:
 .PHONY: pre-inflate
 pre-inflate:
 	$(kustomize-build-crossplane) > ./kustomize/crossplane/hard-coded/chart-rendered.yaml
+
+##### MANUAL KUSTOMIZE DEPLOYMENT - useful if you are not using fluxcd
 
 .PHONY: crossplane
 crossplane: cluster
@@ -43,13 +52,11 @@ mock-cloud: provider
 	$(kustomize-build) ./kustomize/mock-cloud | kubectl apply -f -
 	kubectl wait --for=condition=Ready object mock-cloud-crossplane --timeout=120s
 
+##### end of MANUAL KUSTOMIZE DEPLOYMENT
+
+##### or you can just let fluxcd to drive it for you
 .PHONY: setup-fluxcd
-setup-fluxcd:
+setup-fluxcd: cluster
 	@test -n "$(GITHUB_TOKEN)" || (echo '$$GITHUB_TOKEN is not found' && false)
 	@test -n "$(GITHUB_USER)" || (echo '$$GITHUB_USER is not found' && false)
-	flux bootstrap github \
-		--owner=$(GITHUB_USER) \
-		--repository=taste-crossplane \
-		--branch=flux \
-		--path=./clusters/local \
-		--personal
+	$(flux-bootstrap) || (echo "trying again..." && sleep 10 && $(flux-bootstrap))
