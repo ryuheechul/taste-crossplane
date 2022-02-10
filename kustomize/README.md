@@ -16,7 +16,7 @@ That means we will need to deploy things kubernetes in order to this Crossplane 
 - but fear not `kustomize` can make use of helm charts via `helmChartInflationGenerator`
 - `fluxcd` fulfills GitOps workflow for kustomize for automations to take responsible to deliver the changes without manual human operation
 
-An example of using `helmChartInflationGenerator`: [./crossplane/kustomization.yaml](./crossplane/kustomization.yaml)
+An example of using `helmChartInflationGenerator`: [./crossplane/with-inflator/kustomization.yaml](./crossplane/with-inflator/kustomization.yaml)
 
 ## Structure
 
