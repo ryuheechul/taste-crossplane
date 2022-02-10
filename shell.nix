@@ -10,6 +10,7 @@ in
       kubectl
       kubernetes-helm
       fluxcd
+      yq
       crossplane-cli
     ];
 
