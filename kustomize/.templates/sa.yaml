@@ -1,0 +1,17 @@
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  name: changeme
+spec:
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: changeme
+        namespace: mock-cloud
+        annotations:
+          from: template
+  providerConfigRef:
+    name: kubernetes-provider
+

@@ -10,8 +10,9 @@ in
       kubectl
       kubernetes-helm
       fluxcd
-      yq
+      yq-go
       crossplane-cli
+      act
     ];
 
   # Environment variables to set here - https://discourse.nixos.org/t/provide-environmental-variables-from-nix/3453/3
