@@ -51,3 +51,6 @@ fix-repo:
 revert-repo:
 	@cd clusters/local && $(MAKE) -s revert-repo
 
+.PHONY: act-add-sa
+act-add-sa:
+	yq .act/events/add-sa-default.yaml -o json | act --env USER=bot -j add-sa -e /dev/stdin

@@ -1,0 +1,5 @@
+inputs:
+  name: 'new-sa'
+  source-branch: main
+  new-branch: add-sa-test
+  draft: yes
