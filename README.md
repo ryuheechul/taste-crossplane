@@ -2,6 +2,10 @@
 
 With this repository, you will be able to have a taste of crossplane and you can actually get your hands dirty as well.
 
+## Docs
+
+[./docs](./docs)
+
 ## Take Off
 
 ### Prerequisites
