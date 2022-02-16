@@ -4,7 +4,9 @@ With this repository, you will be able to have a taste of crossplane and you can
 
 ## Docs
 
-[./docs](./docs)
+[Why Crossplane](./docs/why-crossplane.md)
+[Why Not Terraform](./docs/why-not-terraform.md)
+[other docs](./docs)
 
 ## Take Off
 

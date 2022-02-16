@@ -51,6 +51,81 @@ Without having "experts" handling these in time, PRs will have to wait longer th
 which creates more fear and less involvements from engineers.
 Is that what we want? We probably want the opposite which is self-servable IaC.
 
+## Diagrams
+
+### User Journey - Deploy via Terraform + Atlantis
+```mermaid
+journey
+  title Deploy via Terraform + Atlantis
+  section Human
+    learn how to code terraform: 3: User
+    find the "right" root module: 1: User
+    fit the change into "right" places: 2: User
+    Push changes to a repo: 4: User
+  section Partially Automated
+    CI checks and plans: 6: User, Atlantis
+    deploy via PR comment: 4: User, Atlantis
+    Resource gets created: 7: Terraform
+    Output is viewable: 3: Terraform
+```
+
+### User Journey - Deploy via Terraform Manually
+```mermaid
+journey
+  title Deploy via Terraform Manually
+  section Terraform master
+    learn how to code terraform: 3: User
+    find the "right" root module: 1: User
+    fit the change into "right" places: 2: User
+    Ask admin to deploy: 2: User, Admin
+    or master deploy and do it yourself: 1: User
+    🙏 for repo is synced right away: 2: User
+    🙏 for no snowflake local env: 1: User
+    🙏 for no untracked vars somewhere: 1: User
+```
+
+### Flowchart - Unoptimal Path With Terraform
+```mermaid
+flowchart LR
+    subgraph sc[Where to Save]
+        s[\State\] -.-> local[(local)]
+        s -.-> s3[(S3)]
+        s -.-> tc[(Terraform Cloud)]
+    end
+
+    subgraph dw[Deploy Workflow]
+        w{plan/apply} -.-> lm{{"via local machines"}}
+        w -.-> a(["via Atlantis"])
+    end
+
+    subgraph cm[Code Management]
+        c{code} -.-> bo[big one root module]
+        c -. "probably via seperate repos" .-> mr[multiple root modules]
+    end
+
+    subgraph pa[Possible Admin Involvements]
+        sgc>State gets corrupted] --> adm[\Admin's help/]
+        pro{{"PR(Apply/Merge) should excutes in orders"}} --> adm
+        stc[/Terraform/Providers upgrade/] --> adm
+        ar[/any cause/] --> sgc
+        stc -- "(not everytime)" --> sgc
+    end
+
+    %%subgraph an[Annotations]
+        a1>anti-collaborative]
+        a2>better but not a full automation yet]
+        a3>potentially operations will get slower]
+        a4>relations can be difficult to track and manage]
+        lm -.- a1
+        a -.- a2
+        bo -.- a3
+        mr -.- a4
+    %%end
+
+    cm -.- sc
+    dw -.- pa 
+```
+
 ### How about Kubernetes Operator pattern approach?
 
 One of the important aspects of how Kubernetes working to me is about its continous reconciliation.
@@ -68,7 +143,7 @@ Crossplane is an operator that specializes on talking to providers via API and c
 ĸ
 That's why it runs on top of Kubernetes.
 
-## Benefits of Crossplane
+## Benefits of Crossplane Compared to Terraform
 
 - free from managing states, just let crossplane manages that (the Kubernetes cluster becomes the living database)
 - (fast) individual reconciliation
@@ -78,10 +153,12 @@ That's why it runs on top of Kubernetes.
 - lots of automation points (like script or Github Actions to create new resources, linting and tests)
 - more on this, look [here](./why-crossplane.md)
 
-
 ## What might be missing from not using Terraform (directly)
 
 - Terraform is more mature than Crossplane by years
 - documentation friendliness
 - imperative style of operation with `terraform plan/apply`
 - a peace of mind from using proven technology since Crossplane is younger and less exposed to us
+
+## Footnote
+read [gotchas.md](./gotchas.md)
