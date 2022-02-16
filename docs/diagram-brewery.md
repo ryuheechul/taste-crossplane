@@ -1,6 +1,6 @@
-# new diagrams are brewing here
+# New diagrams are brewing here
 
-### Deploy sequence with Crossplane
+### Deploy Sequence With Crossplane + Other Enhancements
 
 ```mermaid
 sequenceDiagram
@@ -36,7 +36,7 @@ sequenceDiagram
 ```
 
 
-### User journey - Deploy via Crossplane + GitOps
+### User Journey - Deploy via Crossplane + Gitops
 ```mermaid
 journey
   title Deploy via Crossplane
@@ -47,14 +47,14 @@ journey
     GitOps deploys: 7: FluxCD, Kustomize
     Crossplane reconciles: 7: Crossplane
     Resource gets created: 7: Crossplane
-    Output is updated and usable: 7: Kubernetes
+    Output is updated and consumable: 7: Kubernetes
 ```
 
-### User journey - Deploy via Terraform + Atlantis
+### User Journey - Deploy via Terraform + Atlantis
 ```mermaid
 journey
   title Deploy via Terraform
-  section User
+  section Human
     learn how to code terraform: 3: User
     find the "right" root module: 1: User
     fit the change into "right" places: 2: User
@@ -66,7 +66,7 @@ journey
     Output is viewable: 3: Terraform
 ```
 
-### User journey - Deploy via Terraform manually
+### User Journey - Deploy via Terraform Manually
 ```mermaid
 journey
   title Deploy via Terraform manually
@@ -79,4 +79,45 @@ journey
     🙏 for repo is synced right away: 2: User
     🙏 for no snowflake local env: 1: User
     🙏 for no untracked vars somewhere: 1: User
+```
+
+### Flowchart - Unoptimal Path With Terraform
+```mermaid
+flowchart LR
+    subgraph dw[Deploy Workflow]
+        w[plan/apply] -.-> lm["via local machines"]
+        w -.-> a["via Atlantis"]
+    end
+
+    subgraph cm[Code Management]
+        c[code] -.-> bo[big one root module]
+        c -. "probably via seperate repos" .-> mr[multiple root modules]
+    end
+
+    %%subgraph an[Annotations]
+        a1[anti-collaborative]
+        a2[better but not a full automation yet]
+        a3[potentially operations will get slower]
+        a4[relations can be difficult to track and manage]
+        lm -.- a1
+        a -.- a2
+        bo -.- a3
+        mr -.- a4
+    %%end
+
+    subgraph sc[Where to Save]
+        s[State] -.-> local
+        s -.-> s3[S3]
+        s -.-> tc[Terraform Cloud]
+    end
+
+    subgraph pa[Possible Admin Involvements]
+        sgc[State gets corrupted] --> adm[Admin's help]
+        pro["PR(Apply/Merge) should excutes in orders"] --> adm
+        stc[Terraform/Providers upgrade] --> adm
+        stc -- "(not everytime)" --> sgc
+    end
+
+    cm -.- sc
+    dw -.- pa 
 ```

@@ -38,6 +38,19 @@ Once that decision is made not only it's hard to revert later on, but each root 
 Although there are options like Atlantis (CI/CD for Terraform - which is much better than a case that only selected few manaully run on local machines), 
 we still tend to `/terraform apply` manually in a PR after reviewing the result of `terraform plan` as a comment in the PR.
 
+#### PR queue chaos
+
+Imagine five different PRs waiting to be merged (it was quite common for me in a previous workplace).
+
+`#1` is planned and the Terraform state is locked now all other PRs are not appliable until this gets merged and unlocked the state.
+After `#1` is merged, now `#2` (or any other really) is out-dated, so now the plan might include deletion of what's added from `#1` if `#2` doesn't pull the changes from upstream.
+PR filers usually don't know what to in that situation so it requires minor time sensitive coordinations every time.
+
+And not just that, this dependency handling situations can get much more complicated than above easily.
+Without having "experts" handling these in time, PRs will have to wait longer than necessary and make a bad impression of "applying infrastructure changes are slow and painful",
+which creates more fear and less involvements from engineers.
+Is that what we want? We probably want the opposite which is self-servable IaC.
+
 ### How about Kubernetes Operator pattern approach?
 
 One of the important aspects of how Kubernetes working to me is about its continous reconciliation.
