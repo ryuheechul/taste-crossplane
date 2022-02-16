@@ -1,4 +1,4 @@
-# New diagrams are brewing here
+# New Diagrams Are Brewing Here
 
 ### Deploy Sequence With Crossplane + Other Enhancements
 
@@ -53,7 +53,7 @@ journey
 ### User Journey - Deploy via Terraform + Atlantis
 ```mermaid
 journey
-  title Deploy via Terraform
+  title Deploy via Terraform + Atlantis
   section Human
     learn how to code terraform: 3: User
     find the "right" root module: 1: User
@@ -69,7 +69,7 @@ journey
 ### User Journey - Deploy via Terraform Manually
 ```mermaid
 journey
-  title Deploy via Terraform manually
+  title Deploy via Terraform Manually
   section Terraform master
     learn how to code terraform: 3: User
     find the "right" root module: 1: User
@@ -84,39 +84,40 @@ journey
 ### Flowchart - Unoptimal Path With Terraform
 ```mermaid
 flowchart LR
+    subgraph sc[Where to Save]
+        s[\State\] -.-> local[(local)]
+        s -.-> s3[(S3)]
+        s -.-> tc[(Terraform Cloud)]
+    end
+
     subgraph dw[Deploy Workflow]
-        w[plan/apply] -.-> lm["via local machines"]
-        w -.-> a["via Atlantis"]
+        w{plan/apply} -.-> lm{{"via local machines"}}
+        w -.-> a(["via Atlantis"])
     end
 
     subgraph cm[Code Management]
-        c[code] -.-> bo[big one root module]
+        c{code} -.-> bo[big one root module]
         c -. "probably via seperate repos" .-> mr[multiple root modules]
     end
 
+    subgraph pa[Possible Admin Involvements]
+        sgc>State gets corrupted] --> adm[\Admin's help/]
+        pro{{"PR(Apply/Merge) should excutes in orders"}} --> adm
+        stc[/Terraform/Providers upgrade/] --> adm
+        ar[/any cause/] --> sgc
+        stc -- "(not everytime)" --> sgc
+    end
+
     %%subgraph an[Annotations]
-        a1[anti-collaborative]
-        a2[better but not a full automation yet]
-        a3[potentially operations will get slower]
-        a4[relations can be difficult to track and manage]
+        a1>anti-collaborative]
+        a2>better but not a full automation yet]
+        a3>potentially operations will get slower]
+        a4>relations can be difficult to track and manage]
         lm -.- a1
         a -.- a2
         bo -.- a3
         mr -.- a4
     %%end
-
-    subgraph sc[Where to Save]
-        s[State] -.-> local
-        s -.-> s3[S3]
-        s -.-> tc[Terraform Cloud]
-    end
-
-    subgraph pa[Possible Admin Involvements]
-        sgc[State gets corrupted] --> adm[Admin's help]
-        pro["PR(Apply/Merge) should excutes in orders"] --> adm
-        stc[Terraform/Providers upgrade] --> adm
-        stc -- "(not everytime)" --> sgc
-    end
 
     cm -.- sc
     dw -.- pa 
