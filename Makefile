@@ -1,7 +1,7 @@
 flux-bootstrap = flux bootstrap github \
 	--owner=$(GITHUB_USER) \
 	--repository=taste-crossplane \
-	--branch=flux \
+	--branch=main \
 	--path=./clusters/local \
 	--personal
 
