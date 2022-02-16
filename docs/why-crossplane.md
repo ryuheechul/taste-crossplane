@@ -8,3 +8,6 @@
 ## Comparing with Terraform
 
 [./why-not-terraform.md](./why-not-terraform.md)
+
+## Other articles
+- https://next.redhat.com/2020/10/29/production-ready-deployments-using-the-crossplane-operator-to-manage-and-provision-cloud-native-services/
