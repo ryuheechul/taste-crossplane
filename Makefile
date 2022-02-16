@@ -43,13 +43,13 @@ setup-fluxcd: cluster
 .PHONY: provision
 provision: setup-fluxcd
 
-.PHONY: fix-repo
-fix-repo:
-	@cd clusters/local && $(MAKE) -s fix-repo
+.PHONY: fix-username
+fix-username:
+	@cd clusters/local && $(MAKE) fix-username
 
 .PHONY: revert-repo
-revert-repo:
-	@cd clusters/local && $(MAKE) -s revert-repo
+revert-username:
+	@cd clusters/local && $(MAKE) revert-username
 
 .PHONY: act-add-sa
 act-add-sa:

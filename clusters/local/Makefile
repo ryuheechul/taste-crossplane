@@ -1,13 +1,16 @@
+flux-system-source-file = ./flux-system/gotk-sync.yaml
 flux-source-file = ./taste-crossplane-source.yaml
-temp-file-fix-repo-taste-crossplane = /tmp/fix-typo
 
-.PHONY: fix-repo
-fix-repo:
+.PHONY: fix-username
+fix-username:
 	@test -n "$(GITHUB_USER)" || (echo '$$GITHUB_USER is not found' && false)
-	@../../bin/fix-repo.sh $(flux-source-file)
-	git diff $(flux-source-file)
+	@../../bin/fix-username.sh $(flux-system-source-file)
+	@../../bin/fix-username.sh $(flux-source-file)
+	git diff $(flux-source-file) $(flux-system-source-file)
+	@echo ""; echo 'Do `git commit` if these changes are intended.'; echo ""
+	@echo 'you can also `make revert-username`'; echo ""
 
-.PHONY: revert-repo
-revert-repo:
-	@git checkout -- $(flux-source-file)
-	git diff $(flux-source-file)
+.PHONY: revert-username
+revert-username:
+	@git checkout -- $(flux-source-file) $(flux-system-source-file)
+	git diff $(flux-source-file) $(flux-system-source-file)
