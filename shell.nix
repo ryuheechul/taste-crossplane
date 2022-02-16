@@ -10,6 +10,7 @@ in
       kubectl
       kubernetes-helm
       fluxcd
+      jq
       yq-go
       crossplane-cli
       act

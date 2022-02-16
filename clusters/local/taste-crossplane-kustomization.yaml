@@ -1,3 +1,4 @@
+# crossplane
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -11,6 +12,8 @@ spec:
   sourceRef:
     kind: GitRepository
     name: taste-crossplane
+
+# provider-kubernetes
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
@@ -30,13 +33,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: provider-core
+  name: provider-base
   namespace: flux-system
 spec:
   dependsOn:
     - name: crossplane
   interval: 1m0s
-  path: ./kustomize/provider-kubernetes/core
+  path: ./kustomize/provider-kubernetes/base
   prune: true
   sourceRef:
     kind: GitRepository
@@ -50,7 +53,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: provider-core
+    - name: provider-base
     - name: provide
   interval: 1m0s
   path: ./kustomize/provider-kubernetes/with-config
@@ -70,6 +73,56 @@ spec:
     - name: provider-with-config
   interval: 1m0s
   path: ./kustomize/mock-cloud
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: taste-crossplane
+
+# provider-aws
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: provider-base-aws
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: crossplane
+  interval: 1m0s
+  path: ./kustomize/provider-aws/base
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: taste-crossplane
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: provider-aws-with-config
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: provider-base-aws
+    - name: provide
+  interval: 1m0s
+  path: ./kustomize/provider-aws/with-config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: taste-crossplane
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: aws
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: provider-aws-with-config
+  interval: 1m0s
+  path: ./kustomize/aws
   prune: true
   sourceRef:
     kind: GitRepository
