@@ -1,6 +1,5 @@
-# Why Crossplane (WIP)
-
-read [./why-not-terraform.md](./why-not-terraform.md) for more context
+# Why Crossplane
+> read [why-not-terraform.md](./why-not-terraform.md) for more context
 
 - adapts Kubernetes ways to Infrastructure management
 - individual reconciliation for each infrastructure resource

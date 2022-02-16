@@ -1,4 +1,4 @@
-# Why not Terraform?
+# Why Not Terraform?
 
 Terraform changed how we manage infrastructure in a good way.
 It convinced us that declarative management of infrastructure can become much simpler than imperative approach counterparts.
@@ -8,14 +8,14 @@ It liberates us from having to directly deal with each vendor's specific way of 
 
 It's a great tool and I really liked the experience of using Terraform but I'm not done here and neither the industry.
 
-## Do we need more?
+## Do We Need More?
 
 While I'm not arguing that we should not use Terraform all together, in many cases it can be replaced by something like Crossplane for reasons that I will talk about shortly.
 
-### Shortcomings of Terraform experience
+### Shortcomings of Terraform Experience
 > also read https://blog.crossplane.io/crossplane-vs-terraform/
 
-#### state management
+#### State Management
 
 You will need to decide where to store the state. Local? S3?
 It can be tricky to handle the corruption, when state deviates from actual state in your cloud provider.
@@ -28,17 +28,17 @@ That becomes more and more problem as usually root modules only grow bigger over
 That means even though actual adding another resource operation takes constant time, doing it via Terraform takes linearly longer over time.
 Do we want to wait 30 minutes just be able to add an IAM user (every time)? I've been there.
 
-#### how many root modules and how big it should be?
+#### How Many Root Modules and How Big It Should Be?
 
 Do we manage just one root module for the whole infrastructure or is it too big so it should be split into multiple? 
 Once that decision is made not only it's hard to revert later on, but each root module requires proper configuration like state management and deployment pipeline etc.
 
-#### having to apply "manually"
+#### Having to Apply "Manually"
 
 Although there are options like Atlantis (CI/CD for Terraform - which is much better than a case that only selected few manaully run on local machines), 
 we still tend to `/terraform apply` manually in a PR after reviewing the result of `terraform plan` as a comment in the PR.
 
-#### PR queue chaos
+#### PR Queue Chaos
 
 Imagine five different PRs waiting to be merged (it was quite common for me in a previous workplace).
 
@@ -126,7 +126,7 @@ flowchart LR
     dw -.- pa 
 ```
 
-### How about Kubernetes Operator pattern approach?
+### How About Kubernetes Operator Pattern Approach?
 
 One of the important aspects of how Kubernetes working to me is about its continous reconciliation.
 You create a manifest, and Kubernetes try to reconcile that to a realilty and let you know the result via Events and status.
@@ -153,7 +153,7 @@ That's why it runs on top of Kubernetes.
 - lots of automation points (like script or Github Actions to create new resources, linting and tests)
 - more on this, look [here](./why-crossplane.md)
 
-## What might be missing from not using Terraform (directly)
+## What Might Be Missing From Not Using Terraform (Directly)
 
 - Terraform is more mature than Crossplane by years
 - documentation friendliness
