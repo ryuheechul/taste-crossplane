@@ -13,7 +13,7 @@ echo "now we are going to delete the user..."
 
 aws iam delete-user --user-name=test-user-created-by-crossplane
 
-echo "deleted the user
+echo "deleted the user"
 
 echo "sleep 10 seconds and verify again to detect deletion..."
 
