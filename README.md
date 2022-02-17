@@ -23,8 +23,45 @@ With this repository, you will be able to have a taste of crossplane and you can
 
 ### Apply Your Own Changes
 - **make sure** you forked the repository instead of cloning the original repository
-- commit and push to `flux` branch
+- **make sure** you fixed the username via [this workflow](../../actions/workflows/fix-username.yml), so source url for fluxcd is fixed via the newest commit
+- commit and push to `main` branch
+	- run [this workflow](../../actions/workflows/add-sa.yml) to be quickly go through this
 -	verify fluxcd detects and applys the new changes
+	- fluxcd detects -> new Crossplane CRD is created
+	- [Crossplane tries reconcile the changes](../docs/why-crossplane.md#deploy-sequence-with-crossplane--other-enhancements)
+	- `make status` will show you something like this below
+
+```bash
+minikube status -p taste-crossplane
+taste-crossplane
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+kubectl get kustomizations.kustomize.toolkit.fluxcd.io -n flux-system
+NAME                       READY   STATUS                                                            AGE
+aws                        True    Applied revision: main/352be952fe8ecbc02aa3a5157ab1ec5b169dbaee   18h
+crossplane                 True    Applied revision: main/352be952fe8ecbc02aa3a5157ab1ec5b169dbaee   18h
+flux-system                True    Applied revision: main/352be952fe8ecbc02aa3a5157ab1ec5b169dbaee   18h
+mock-cloud                 True    Applied revision: main/352be952fe8ecbc02aa3a5157ab1ec5b169dbaee   18h
+provide                    True    Applied revision: main/352be952fe8ecbc02aa3a5157ab1ec5b169dbaee   18h
+provider-aws-with-config   True    Applied revision: main/352be952fe8ecbc02aa3a5157ab1ec5b169dbaee   18h
+provider-base              True    Applied revision: main/352be952fe8ecbc02aa3a5157ab1ec5b169dbaee   18h
+provider-base-aws          True    Applied revision: main/352be952fe8ecbc02aa3a5157ab1ec5b169dbaee   18h
+provider-with-config       True    Applied revision: main/352be952fe8ecbc02aa3a5157ab1ec5b169dbaee   18h
+
+kubectl get object.kubernetes.crossplane.io
+NAME                    SYNCED   READY   AGE
+mock-cloud-crossplane   True     True    18h
+this-new-sa             True     True    11m
+
+kubectl get sa -n mock-cloud
+NAME          SECRETS   AGE
+default       1         18h
+this-new-sa   1         11m
+```
 
 ## Clean Up
 `make delete`

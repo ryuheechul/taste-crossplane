@@ -8,6 +8,11 @@ flux-bootstrap = flux bootstrap github \
 .PHONY: status
 status:
 	minikube status -p taste-crossplane
+	kubectl get kustomizations.kustomize.toolkit.fluxcd.io -n flux-system
+	@echo
+	kubectl get object.kubernetes.crossplane.io
+	@echo
+	kubectl get sa -n mock-cloud
 
 .PHONY: cluster
 cluster:
