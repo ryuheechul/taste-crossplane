@@ -1,0 +1,29 @@
+# This is a workflow that is manually triggered
+name: fix username
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  fix-username:
+    runs-on: ubuntu-latest
+    env:
+      sa_name: "${{ github.event.inputs.name }}"
+    steps:
+    - uses: chrisdickinson/setup-yq@latest
+      with:
+        yq-version: v4.20.1
+    - name: Checkout
+      uses: actions/checkout@v2.4.0
+    - name: with Makefile that calls another Makefile
+      env:
+        GITHUB_USER: ${{ github.repository_owner }}
+      run: make fix-username
+    - name: commit and push
+      uses: github-actions-x/commit@v2.8
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'fix username'
+        name: friendly-bot
