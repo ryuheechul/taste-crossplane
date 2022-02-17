@@ -11,7 +11,7 @@ on:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'a name for new resource, in this case, for ServiceAccount'
         # Default value if no value is explicitly provided
-        default: 'new value'
+        default: 'this-new-sa'
         # Input has to be provided for the workflow to run
         required: true
       source-branch:
