@@ -13,6 +13,8 @@ status:
 	kubectl get object.kubernetes.crossplane.io
 	@echo
 	kubectl get sa -n mock-cloud
+	@echo
+	kubectl get users.iam.aws.crossplane.io
 
 .PHONY: cluster
 cluster:
