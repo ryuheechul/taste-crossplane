@@ -29,7 +29,7 @@ With this repository, you will be able to have a taste of crossplane and you can
 -	verify fluxcd detects and applys the new changes
 	- fluxcd detects -> new Crossplane CRD is created
 	- [Crossplane tries reconcile the changes](../docs/why-crossplane.md#deploy-sequence-with-crossplane--other-enhancements)
-	- `make status` will show you something like this below
+	- `[watch] make status` will show you something like this below
 
 ```bash
 minikube status -p taste-crossplane
