@@ -12,7 +12,7 @@ With this repository, you will be able to have a taste of crossplane and you can
 
 ### Prerequisites
 
-- fork the this repository
+- [fork the this repository](./fork)
 - dependencies are currently defined at [./shell.nix](./shell.nix)
 - `make fix-username` to point your forked repo for `fluxcd` not the original repo
 - and [export your credentials](https://fluxcd.io/docs/get-started/#export-your-credentials)
