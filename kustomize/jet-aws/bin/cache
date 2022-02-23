@@ -1,0 +1,14 @@
+[
+  {
+    "lastTransitionTime": "2022-02-17T00:03:28Z",
+    "reason": "ReconcileSuccess",
+    "status": "True",
+    "type": "Synced"
+  },
+  {
+    "lastTransitionTime": "2022-02-17T00:03:28Z",
+    "reason": "Available",
+    "status": "True",
+    "type": "Ready"
+  }
+]

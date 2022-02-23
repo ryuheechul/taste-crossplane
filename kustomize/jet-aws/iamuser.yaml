@@ -1,0 +1,18 @@
+---
+apiVersion: iam.aws.jet.crossplane.io/v1alpha2
+kind: User
+metadata:
+  name: test-user-created-by-crossplane-jet
+  labels:
+    created-by: "taste-crossplane"
+spec:
+  # to prevent deletion, set `deletionPolicy:Orphan`
+  # if you wish the actual resource to be deleted when this object is deleted,
+  # either set this to `deletionPolicy: Delete` or not set as that's the default value
+  deletionPolicy: Orphan
+  forProvider:
+    tags:
+      provided-by: "provider-jet-aws"
+  providerConfigRef:
+    # with my test, this one is more reliable on reconciliation on small details such as tags than provider-aws
+    name: provider-jet-aws

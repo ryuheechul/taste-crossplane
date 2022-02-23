@@ -1,7 +1,7 @@
-apiVersion: aws.crossplane.io/v1beta1
+apiVersion: aws.jet.crossplane.io/v1alpha1
 kind: ProviderConfig
 metadata:
-  name: provider-aws
+  name: provider-jet-aws
 spec:
   credentials:
     source: Secret

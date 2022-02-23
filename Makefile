@@ -15,10 +15,17 @@ status:
 	kubectl get sa -n mock-cloud
 	@echo
 	kubectl get users.iam.aws.crossplane.io
+	@echo
+	kubectl get users.iam.aws.jet.crossplane.io
+
+.PHONY: watch-flux
+watch-flux:
+	kubectl get -w kustomizations.kustomize.toolkit.fluxcd.io -n flux-system
 
 .PHONY: cluster
 cluster:
-	minikube start -p taste-crossplane
+	minikube start -p taste-crossplane --memory 4096 --cpus 2
+	@# or you can customize memory and cpu to fit your local environment
 
 .PHONY: stop
 stop:

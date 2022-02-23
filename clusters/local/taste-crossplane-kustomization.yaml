@@ -33,7 +33,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: provider-base
+  name: provider-k8s-base
   namespace: flux-system
 spec:
   dependsOn:
@@ -49,11 +49,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: provider-with-config
+  name: provider-k8s-with-config
   namespace: flux-system
 spec:
   dependsOn:
-    - name: provider-base
+    - name: provider-k8s-base
     - name: provide
   interval: 1m0s
   path: ./kustomize/provider-kubernetes/with-config
@@ -70,7 +70,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: provider-with-config
+    - name: provider-k8s-with-config
   interval: 1m0s
   path: ./kustomize/mock-cloud
   prune: true
@@ -84,7 +84,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: provider-base-aws
+  name: provider-aws-base
   namespace: flux-system
 spec:
   dependsOn:
@@ -104,10 +104,42 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: provider-base-aws
-    - name: provide
+    - name: provider-aws-base
   interval: 1m0s
   path: ./kustomize/provider-aws/with-config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: taste-crossplane
+
+# provider-jet-aws
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: provider-jet-aws-base
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: crossplane
+  interval: 1m0s
+  path: ./kustomize/provider-jet-aws/base
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: taste-crossplane
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: provider-jet-aws-with-config
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: provider-jet-aws-base
+  interval: 1m0s
+  path: ./kustomize/provider-jet-aws/with-config
   prune: true
   sourceRef:
     kind: GitRepository
@@ -123,6 +155,21 @@ spec:
     - name: provider-aws-with-config
   interval: 1m0s
   path: ./kustomize/aws
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: taste-crossplane
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: jet-aws
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: provider-jet-aws-with-config
+  interval: 1m0s
+  path: ./kustomize/jet-aws
   prune: true
   sourceRef:
     kind: GitRepository
