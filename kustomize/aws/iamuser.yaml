@@ -6,6 +6,10 @@ metadata:
   labels:
     created-by: "taste-crossplane"
 spec:
+  # deletionPolicy: Delete
+  # to prevent deletion, set `deletionPolicy:Orphan`
+  # the line above is commented to let you know that this is the default behavior which is opposite of
+  # https://github.com/ryuheechul/taste-crossplane-external-repo-example/blob/b8b3317d5b6ea76a7270505c05f5fdb3fb9cbdf8/infra/kustomize/external-repo/namespace.yaml#L24
   forProvider:
     tags:
       - key: created-by
