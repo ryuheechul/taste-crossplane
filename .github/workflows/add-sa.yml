@@ -51,19 +51,19 @@ jobs:
       run: make build-for-act
     - name: mkdir
       run: |
-        mkdir -p kustomize/mock-cloud/serviceaccounts
+        mkdir -p kustomize/crossplane/resources/mock-cloud/serviceaccounts
     - name: add serviceaccount
       uses: ./.github/actions/run
       with:
         run: >-
-          cd kustomize/mock-cloud
+          cd kustomize/crossplane/resources/mock-cloud
           &&
           ../.templates/add-sa.sh "serviceaccounts/${{ env.sa_name }}.yaml" "${{ env.sa_name }}"
     - name: kustomize build
       uses: ./.github/actions/run
       with:
         run: >-
-          cd kustomize/mock-cloud
+          cd kustomize/crossplane/resources/mock-cloud
           &&
           kustomize build
     - name: commit and push

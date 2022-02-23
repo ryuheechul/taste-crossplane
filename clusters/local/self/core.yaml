@@ -1,0 +1,27 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: crossplane
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./kustomize/crossplane/system/hard-coded
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: taste-crossplane
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: export-sa
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./kustomize/shim/export-sa
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: taste-crossplane
+

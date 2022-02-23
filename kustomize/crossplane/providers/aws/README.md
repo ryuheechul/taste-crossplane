@@ -1,6 +1,6 @@
-# provider-aws
+# providers/aws
 
-We used [provider-kubernetes](../provider-kubernetes) to be able to see the provider working even without access to cloud providers like AWS.
+We used [providers/kubernetes](../kubernetes) to be able to see the provider working even without access to cloud providers like AWS.
 
 However, actually nothing stops us from deploying AWS manifests via Crossplane, it will just simply not reconcile because it lacks access to cloud.
 But we still can see how it looks like to deploy AWS resources via Crossplane by this example.

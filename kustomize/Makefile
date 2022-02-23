@@ -1,5 +1,5 @@
 kustomize-build = kubectl kustomize --enable-helm
-kustomize-build-crossplane = $(kustomize-build) ./crossplane/with-inflator
+kustomize-build-crossplane = $(kustomize-build) ./crossplane/system/with-inflator
 
 .PHONY: inflate
 inflate:
@@ -12,24 +12,24 @@ crossplane:
 	$(kustomize-build-crossplane) | kubectl apply -f -
 	kubectl wait --for=condition=Available deployment crossplane --namespace=crossplane-system --timeout=60s
 
-.PHONY: provide
-provide:
-	$(kustomize-build) ./provide | kubectl apply -f -
+.PHONY: export-sa
+export-sa:
+	$(kustomize-build) ./shim/export-sa | kubectl apply -f -
 	kubectl wait --for=delete secret/kubeconfig --timeout=20s
 
-.PHONY: provider-core
-provider-core: crossplane
-	$(kustomize-build) ./provider-kubernetes/core | kubectl apply -f -
+.PHONY: provider-k8s-core
+provider-k8s-core: crossplane
+	$(kustomize-build) ./crossplane/providers/kubernetes/core | kubectl apply -f -
 	kubectl wait --for=condition=Healthy providers provider-kubernetes --timeout=30s
 
-.PHONY: provider
-provider: provider-core provide
-	$(kustomize-build) ./provider-kubernetes/with-config | kubectl apply -f -
+.PHONY: provider-k8s
+provider-k8s: provider-k8s-core export-sa
+	$(kustomize-build) ./crossplane/providers/kubernetes/with-config | kubectl apply -f -
 	kubectl wait --for=condition=Healthy providers provider-kubernetes --timeout=30s
 
 .PHONY: mock-cloud
-mock-cloud: provider
-	$(kustomize-build) ./mock-cloud | kubectl apply -f -
+mock-cloud: provider-k8s
+	$(kustomize-build) ./crossplane/resources/mock-cloud | kubectl apply -f -
 	kubectl wait --for=condition=Ready object mock-cloud-crossplane --timeout=120s
 
 ##### end of MANUAL KUSTOMIZE DEPLOYMENT

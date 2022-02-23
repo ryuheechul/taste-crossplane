@@ -1,4 +1,4 @@
-# provider-kubernetes 
+# providers/kubernetes 
 
 This is what we setup that enables Crossplane to establish connection to a target provider.
 
