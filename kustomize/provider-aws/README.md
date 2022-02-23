@@ -7,15 +7,27 @@ But we still can see how it looks like to deploy AWS resources via Crossplane by
 
 ## Setup access to AWS
 
-In case you do have access to AWS and you actually want to try it out, do the following: TBC
-
+In case you do have access to AWS and you actually want to try it out, that can be done by `bin/apply-secret.sh`
 ## What exactly happens?
 
 1. Install the "provider"
 By adding [./base/provider.yaml](./base/provider.yaml) to Crossplane cluster.
 
 2. Establish connection
-TBC
+By adding [./with-config/providerconfig.yaml](./with-config/providerconfig.yaml)
+Which await for a Secret below
+
+```
+# can be created by `bin/apply-secret.sh`
+apiVersion: v1
+data:
+  creds: xXx=
+kind: Secret
+metadata:
+  name: aws-creds
+  namespace: crossplane-system
+type: Opaque
+```
 
 3. Ready to make changes
 Crossplane will now watch for any resources that are derived from `*.aws.crossplane.io` and reconcile.
