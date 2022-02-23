@@ -11,7 +11,7 @@ script_d="$(dirname "$0")"
 
 echo "now we are going to delete the user..."
 
-aws iam delete-user --user-name=test-user-created-by-crossplane
+aws iam delete-user --user-name=test-user-created-by-crossplane-jet
 
 echo "deleted the user"
 
