@@ -58,7 +58,7 @@ jobs:
         run: >-
           cd kustomize/crossplane/resources/mock-cloud
           &&
-          ../.templates/add-sa.sh "serviceaccounts/${{ env.sa_name }}.yaml" "${{ env.sa_name }}"
+          ../../../.templates/add-sa.sh "serviceaccounts/${{ env.sa_name }}.yaml" "${{ env.sa_name }}"
     - name: kustomize build
       uses: ./.github/actions/run
       with:
