@@ -17,13 +17,13 @@ export-sa:
 	$(kustomize-build) ./shim/export-sa | kubectl apply -f -
 	kubectl wait --for=delete secret/kubeconfig --timeout=20s
 
-.PHONY: provider-k8s-core
-provider-k8s-core: crossplane
-	$(kustomize-build) ./crossplane/providers/kubernetes/core | kubectl apply -f -
+.PHONY: provider-k8s-base
+provider-k8s-base: crossplane
+	$(kustomize-build) ./crossplane/providers/kubernetes/base | kubectl apply -f -
 	kubectl wait --for=condition=Healthy providers provider-kubernetes --timeout=30s
 
 .PHONY: provider-k8s
-provider-k8s: provider-k8s-core export-sa
+provider-k8s: provider-k8s-base export-sa
 	$(kustomize-build) ./crossplane/providers/kubernetes/with-config | kubectl apply -f -
 	kubectl wait --for=condition=Healthy providers provider-kubernetes --timeout=30s
 
