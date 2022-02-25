@@ -28,6 +28,18 @@ That becomes more and more problem as usually root modules only grow bigger over
 That means even though actual adding another resource operation takes constant time, doing it via Terraform takes linearly longer over time.
 Do we want to wait 30 minutes just be able to add an IAM user (every time)? I've been there.
 
+
+#### Refactoring Unfriendliness
+
+Refactoring in Terraform can come with the cost of having to recreate resources.
+
+Did you rename your resource in `*.tf` file? Next time you apply it will try to recreate even though everything in cloud side information is same.
+Do you want to move some portion of code to another root module? Good luck with migrating that portion of state to another root module to prevent deletion/recreation.
+
+We do have needs to refactor code [from time to time](https://doesntwork.me/post/why-i-choose-cdk/#:~:text=Refactoring%20experience,Terraform/CDK%20code.).
+
+And this unfriendliness to refactoring will bug you one day.
+
 #### How Many Root Modules and How Big It Should Be?
 
 Do we manage just one root module for the whole infrastructure or is it too big so it should be split into multiple? 
