@@ -88,6 +88,7 @@ sequenceDiagram
 
 ## Other articles
 - https://next.redhat.com/2020/10/29/production-ready-deployments-using-the-crossplane-operator-to-manage-and-provision-cloud-native-services/
+- https://searchitoperations.techtarget.com/news/252508176/Crossplane-project-could-disrupt-infrastructure-as-code
 
 ## Footnote
 read [gotchas.md](./gotchas.md)
