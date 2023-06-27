@@ -11,8 +11,8 @@ Crossplane is a tool that I appreciate as a new generation tool that it makes po
 
 ## Not About Possibilities
 
-In [](./why-not-terraform.md), I depict the unhappy cases,
-and in [](./why-crossplane.md), I depict the happy cases intentionally.
+In [Why Not Terraform](./why-not-terraform.md), I depict the unhappy cases,
+and in [Why Crossplane](./why-crossplane.md), I depict the happy cases intentionally.
 
 Why? I wanted to point out what might be (hidden) in your way with using Terraform and what might be enabling you a better way with Crossplane.
 
